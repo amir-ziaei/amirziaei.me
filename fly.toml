@@ -1,5 +1,5 @@
-app = "amirziaei-me-bff2"
-primary_region = "fra"
+app = "amirziaei"
+primary_region = "ams"
 kill_signal = "SIGINT"
 kill_timeout = 5
 processes = [ ]
