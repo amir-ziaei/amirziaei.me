@@ -1,20 +1,30 @@
-import {
-  vitePlugin as remix,
-  cloudflareDevProxyVitePlugin as remixCloudflareDevProxy,
-} from "@remix-run/dev";
+import { reactRouter } from "@react-router/dev/vite";
+import { cloudflareDevProxy } from "@react-router/dev/vite/cloudflare";
+import autoprefixer from "autoprefixer";
+import tailwindcss from "tailwindcss";
 import { defineConfig } from "vite";
 import tsconfigPaths from "vite-tsconfig-paths";
 
-export default defineConfig({
+export default defineConfig(({ isSsrBuild }) => ({
+  build: {
+    rollupOptions: isSsrBuild
+      ? {
+          input: "./workers/app.ts",
+        }
+      : undefined,
+  },
+  css: {
+    postcss: {
+      plugins: [tailwindcss, autoprefixer],
+    },
+  },
   plugins: [
-    remixCloudflareDevProxy(),
-    remix({
-      future: {
-        v3_fetcherPersist: true,
-        v3_relativeSplatPath: true,
-        v3_throwAbortReason: true,
+    cloudflareDevProxy({
+      getLoadContext({ context }) {
+        return { cloudflare: context.cloudflare };
       },
     }),
+    reactRouter(),
     tsconfigPaths(),
   ],
-});
+}));
