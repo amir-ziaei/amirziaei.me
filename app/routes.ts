@@ -6,7 +6,7 @@ import {
 } from '@react-router/dev/routes'
 
 export default [
-  index('routes/index.tsx'),
+  index('routes/home.tsx'),
   ...prefix('blog', [
     index('routes/blog.tsx'),
     route(':slug', 'routes/article.tsx'),
